@@ -176,6 +176,15 @@
       display: flex; flex-direction: column; gap: 10px;
     }
     .cta-soft p { margin: 0; font-size: 0.82rem; color: var(--muted); }
+    .tip-link {
+      align-self: center;
+      color: var(--muted); font-size: 0.74rem;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(212,175,55,0.28);
+      padding: 2px 4px;
+      opacity: 0.9;
+    }
+    .tip-link:hover, .tip-link:focus-visible { color: var(--gold-soft); border-bottom-color: var(--gold); }
     .nfa {
       margin: 4px 0 0; text-align: center;
       font-size: 0.72rem; color: color-mix(in srgb, var(--muted) 80%, transparent);
@@ -247,6 +256,7 @@
           <p>Want the desk’s UnlockFlow briefs (humans)? Soft path — bot checkout, no invite spam.</p>
           <a class="btn primary block" id="btn-cta" href="https://t.me/CapitalFlowDeskBot?start=pay_19" target="_blank" rel="noopener">Open bot · Members intro 19 USDT →</a>
         </div>
+        <a class="tip-link" id="btn-tip" href="https://mhr2027r-dotcom.github.io/capital-flow-desk-web/tip-jar/" target="_blank" rel="noopener" aria-label="Optional 50 Stars gratitude tip, with zero entitlement">Optional 50★ gratitude tip · zero entitlement</a>
         <p class="nfa">NFA · Education only · Capital Flow Desk · @CapitalFlowDeskBot</p>
       </section>
     </main>
@@ -449,6 +459,18 @@
     cta.addEventListener("click", function (e) {
       var url = cta.getAttribute("href");
       if (tg && tg.openTelegramLink) {
+        e.preventDefault();
+        tg.openTelegramLink(url);
+      }
+    });
+
+    var tip = $("btn-tip");
+    tip.addEventListener("click", function (e) {
+      var url = tip.getAttribute("href");
+      if (tg && tg.openLink) {
+        e.preventDefault();
+        tg.openLink(url);
+      } else if (tg && tg.openTelegramLink) {
         e.preventDefault();
         tg.openTelegramLink(url);
       }
