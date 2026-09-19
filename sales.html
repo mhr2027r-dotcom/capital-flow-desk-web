@@ -19,9 +19,10 @@
   .muted { color: #8aa0b6; font-size: 0.9rem; }
   ol { padding-left: 1.2rem; }
   a { color: #7db7ff; }
-  .btn { display:inline-block; margin: 6px 8px 0 0; padding:12px 16px; background:#1a6feb; color:#fff; text-decoration:none; border-radius:10px; font-weight:600; }
+  .btn { display:inline-block; margin: 6px 8px 0 0; padding:12px 16px; background:#1a6feb; color:#fff; text-decoration:none; border-radius:10px; font-weight:600; border:0; cursor:pointer; font-size:0.95rem; }
   .btn.ghost { background: transparent; border: 1px solid #3a5168; color: #cfe0f2; }
   .row { margin-top: 12px; }
+  #copy-status { margin-left: 8px; color: #7dcea0; font-size: 0.9rem; }
 </style>
 </head>
 <body>
@@ -55,12 +56,16 @@
   <div class="card">
     <h2>Pay here (USDT · TRC-20)</h2>
     <p class="wallet" id="wallet">TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t</p>
+    <div class="row">
+      <button type="button" class="btn ghost" id="btn-copy">Copy address</button>
+      <span id="copy-status" aria-live="polite"></span>
+    </div>
     <p class="warn">Send USDT on TRC-20 only. Other networks can lose funds. Check every character. We never DM you a “new wallet.”</p>
     <h2>After payment (one intake path)</h2>
     <ol>
-      <li>Send <strong>19 USDT</strong> (intro) or <strong>29 USDT</strong> (standard) to the address above</li>
+      <li>Copy the wallet → send <strong>19</strong> (intro), <strong>29</strong> (standard), <strong>99</strong>, or <strong>299</strong> USDT on TRC-20</li>
       <li>Open <a href="https://t.me/CapitalFlowDeskBot?start=pay_19"><strong>@CapitalFlowDeskBot</strong></a> → paste the TxID (plan is pre-selected via deep link)</li>
-      <li>After Tron confirm, you get the private Members invite by DM</li>
+      <li>After Tron confirm, you get the private Members invite by DM (Agent Feed: admin onboards)</li>
     </ol>
     <p class="muted">Backup (if bot is slow): DM <a href="https://t.me/Mohammad_GNA">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle — never paste anyone else’s handle as yours.</p>
     <div class="row">
@@ -73,5 +78,44 @@
 
   <p class="muted"><strong>Not financial advice.</strong> Research and education only. Crypto is volatile. You are responsible for your own decisions. Members invite is never posted on free surfaces.</p>
 </main>
+<script>
+(function () {
+  var WALLET = "TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t";
+  var btn = document.getElementById("btn-copy");
+  var status = document.getElementById("copy-status");
+  function done(ok) {
+    if (!status) return;
+    status.textContent = ok ? "Copied" : "Select & copy manually";
+    if (btn && ok) {
+      var prev = btn.textContent;
+      btn.textContent = "Copied ✓";
+      setTimeout(function () { btn.textContent = prev; status.textContent = ""; }, 1800);
+    }
+  }
+  function fallback(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      done(ok);
+    } catch (e) { done(false); }
+  }
+  if (btn) {
+    btn.addEventListener("click", function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(WALLET).then(function () { done(true); }, function () { fallback(WALLET); });
+      } else {
+        fallback(WALLET);
+      }
+    });
+  }
+})();
+</script>
 </body>
 </html>
