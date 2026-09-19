@@ -139,7 +139,23 @@
     syncPayCta();
   }
 
+  function planFromUrl() {
+    var q = new URLSearchParams(window.location.search);
+    var p = (q.get("plan") || q.get("amount") || "").replace(/^pay_/, "");
+    if (!PAY_START[p]) {
+      var h = (window.location.hash || "").replace(/^#/, "").replace(/^plan=/, "").replace(/^pay_/, "");
+      p = h;
+    }
+    return PAY_START[p] ? p : null;
+  }
+
   initTelegram();
   bind();
-  selectPlan(19);
+  var deep = planFromUrl();
+  if (deep) {
+    showScreen("subscribe");
+    selectPlan(deep);
+  } else {
+    selectPlan(19);
+  }
 })();
