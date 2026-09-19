@@ -1,209 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-  <meta name="color-scheme" content="dark"/>
-  <title>Capital Flow Desk</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="css/app.css"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Capital Flow Desk — Weekly Crypto Research (USDT)</title>
+<meta name="description" content="Institutional-style weekly capital-flow research. 19 USDT intro · 29 USDT/mo. Pay USDT TRC-20, send TxID to @CapitalFlowDeskBot. NFA."/>
+<style>
+  :root { color-scheme: dark; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #0b0f14; color: #e8eef5; line-height: 1.55; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+  h1 { font-size: 1.85rem; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h2 { font-size: 1.1rem; margin: 0 0 10px; }
+  .sub { color: #9db0c5; margin-bottom: 28px; }
+  .card { background: #121a22; border: 1px solid #243041; border-radius: 14px; padding: 20px 18px; margin: 18px 0; }
+  .price { font-size: 1.35rem; font-weight: 700; }
+  .wallet { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; background: #0b0f14; border: 1px solid #2a3a4d; padding: 12px 14px; border-radius: 10px; font-size: 0.95rem; }
+  .warn { color: #f0c674; font-size: 0.92rem; }
+  .muted { color: #8aa0b6; font-size: 0.9rem; }
+  ol { padding-left: 1.2rem; }
+  a { color: #7db7ff; }
+  .btn { display:inline-block; margin: 6px 8px 0 0; padding:12px 16px; background:#1a6feb; color:#fff; text-decoration:none; border-radius:10px; font-weight:600; }
+  .btn.ghost { background: transparent; border: 1px solid #3a5168; color: #cfe0f2; }
+  .row { margin-top: 12px; }
+</style>
 </head>
 <body>
-  <div class="app" id="app">
-    <header class="topbar">
-      <div class="brand">
-        <span class="mark" aria-hidden="true"></span>
-        <div>
-          <div class="brand-name">Capital Flow Desk</div>
-          <div class="brand-tag">Research · USDT</div>
-        </div>
-      </div>
-      <a class="admin-chip" href="https://t.me/Mohammad_GNA" target="_blank" rel="noopener">
-        @Mohammad_GNA
-      </a>
-    </header>
+<main>
+  <h1>Capital Flow Desk</h1>
+  <p class="sub">See the flow before you narrate the candle. Sharp. Calm. No hype. Research only — not financial advice.</p>
 
-    <main class="content">
-      <!-- HOME -->
-      <section class="screen active" id="screen-home" data-screen="home">
-        <p class="kicker">Weekly capital-flow research</p>
-        <h1>See the flow before you narrate the candle.</h1>
-        <p class="lead">
-          Institutional-style briefs on stablecoin liquidity, large-wallet framing,
-          and falsifiable narratives — not signal spam, not “100x” theater.
-        </p>
-
-        <div class="hero-card">
-          <div class="price-line">
-            <span class="price">19</span><span class="unit">USDT intro</span>
-            <span class="sep">·</span>
-            <span class="price">29</span><span class="unit">USDT / mo</span>
-          </div>
-          <p class="muted">Human membership · TRC-20 USDT only</p>
-          <p class="muted" style="margin-top:0.75rem">Also: Agent Feed (draft) for bots/MCPs — <strong>99</strong> / <strong>299</strong> USDT/mo · keyed after confirm. See Agents.</p>
-          <button type="button" class="btn primary" data-nav="subscribe">Subscribe</button>
-        </div>
-
-        <div class="grid-2">
-          <button type="button" class="tile" data-nav="sample">
-            <span class="tile-label">Sample</span>
-            <span class="tile-desc">Public teaser excerpt</span>
-          </button>
-          <button type="button" class="tile" data-nav="agents">
-            <span class="tile-label">For Agents</span>
-            <span class="tile-desc">B2B JSON · draft / keyed</span>
-          </button>
-        </div>
-
-        <ul class="bullets">
-          <li>Stablecoin + venue flow framing with citations</li>
-          <li>2–3 narratives with explicit <strong>invalidation</strong></li>
-          <li>Private Telegram delivery after on-chain confirm</li>
-        </ul>
-
-        <p class="nfa">Not financial advice. Research and education only.</p>
-      </section>
-
-      <!-- SUBSCRIBE -->
-      <section class="screen" id="screen-subscribe" data-screen="subscribe">
-        <p class="kicker">Checkout · USDT TRC-20</p>
-        <h1>Subscribe</h1>
-        <p class="lead">Pick a seat. Pay once. Send TxID. Access after verification.</p>
-
-        <div class="plan-row">
-          <button type="button" class="plan selected" data-amount="19" id="plan-19">
-            <span class="plan-name">Members Intro</span>
-            <span class="plan-price">19 USDT</span>
-            <span class="plan-note">Humans · first month</span>
-          </button>
-          <button type="button" class="plan" data-amount="29" id="plan-29">
-            <span class="plan-name">Members</span>
-            <span class="plan-price">29 USDT</span>
-            <span class="plan-note">Humans · monthly</span>
-          </button>
-        </div>
-        <div class="plan-row" style="margin-top:0.5rem">
-          <button type="button" class="plan" data-amount="99" id="plan-99">
-            <span class="plan-name">Agent Feed</span>
-            <span class="plan-price">99 USDT</span>
-            <span class="plan-note">Bots / MCP · starter</span>
-          </button>
-          <button type="button" class="plan" data-amount="299" id="plan-299">
-            <span class="plan-name">Agent Pro</span>
-            <span class="plan-price">299 USDT</span>
-            <span class="plan-note">Webhook · priority</span>
-          </button>
-        </div>
-
-        <div class="card">
-          <div class="card-label">Wallet · USDT · TRC-20 (Tron)</div>
-          <p class="wallet" id="wallet">TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t</p>
-          <div class="row-actions">
-            <button type="button" class="btn ghost" id="btn-copy">Copy address</button>
-            <a class="btn ghost" href="https://tronscan.org/#/address/TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t" target="_blank" rel="noopener">Tronscan</a>
-          </div>
-          <p class="warn">TRC-20 only. Other networks can lose funds. We never DM a “new wallet.”</p>
-        </div>
-
-        <ol class="steps">
-          <li>Send <strong id="selected-amount">19</strong> USDT on <strong>TRC-20</strong> to the wallet above (Members: 19 intro / 29 mo · Agents: see Agents tab for 99 / 299).</li>
-          <li>Copy the full TxID from Tronscan.</li>
-          <li>Tap <strong>Open bot</strong> below (deep-links your plan). Paste the TxID. Backup: DM <a href="https://t.me/Mohammad_GNA" target="_blank" rel="noopener">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle.</li>
-        </ol>
-
-        <a class="btn primary block" href="https://t.me/CapitalFlowDeskBot?start=pay_19" target="_blank" rel="noopener" id="btn-dm">
-          Open bot · send TxID (19 USDT) →
-        </a>
-        <a class="btn ghost block" href="https://t.me/Mohammad_GNA" target="_blank" rel="noopener">
-          Or DM @Mohammad_GNA →
-        </a>
-        <p class="muted center">NFA · TRC-20 USDT only · Admin @Mohammad_GNA</p>
-      </section>
-
-      <!-- SAMPLE -->
-      <section class="screen" id="screen-sample" data-screen="sample">
-        <p class="kicker">Public teaser</p>
-        <h1>How we think</h1>
-        <p class="lead">Excerpt from the free note. Full weekly brief is for Members.</p>
-
-        <article class="card prose">
-          <h2>Three questions before you trust an “inflow”</h2>
-          <ol>
-            <li>Did <strong>system-wide</strong> stable float expand, contract, or merely reshuffle?</li>
-            <li>Did <strong>spot</strong> conversion into BTC/ETH confirm — or was the move mostly short cover / perp?</li>
-            <li>Did <strong>institutional sleeves</strong> agree (e.g. BTC vs ETH ETF flows)?</li>
-          </ol>
-          <p>Until those three are answered, “inflow” is a headline, not a map.</p>
-          <table class="mini-table">
-            <thead>
-              <tr><th>Observation</th><th>Weak read</th><th>Stronger read</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>One CEX USDT ↑</td>
-                <td>“Bullish inflow”</td>
-                <td>Check peer venues + aggregate float</td>
-              </tr>
-              <tr>
-                <td>Funding ↑, OI ↑, spot quiet</td>
-                <td>“Breakout soon”</td>
-                <td>Crowding risk — wait for spot</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="muted">As-of sample framing · Asia/Dubai · Not financial advice.</p>
-        </article>
-
-        <button type="button" class="btn primary" data-nav="subscribe">Get the full brief</button>
-      </section>
-
-      <!-- AGENTS -->
-      <section class="screen" id="screen-agents" data-screen="agents">
-        <p class="kicker">B2B · Agent Feed · draft</p>
-        <h1>Fuel for other AIs — not another signal bot.</h1>
-        <p class="lead">
-          Capital Flow Desk Data API: machine-readable weekly JSON briefs for bots,
-          MCPs, and trading agents. We sell structured research as <em>input</em>,
-          not competing tip spam.
-        </p>
-
-        <div class="card">
-          <div class="card-label">CFD Agent Feed (draft)</div>
-          <div class="price-line tight">
-            <span class="price">99</span><span class="unit">USDT/mo starter (draft · keyed after confirm)</span>
-          </div>
-          <div class="price-line tight">
-            <span class="price">299</span><span class="unit">USDT/mo pro (draft)</span>
-          </div>
-          <p class="muted">draft · access keyed by admin after confirm (not an instant live feed).</p>
-          <ul class="bullets compact">
-            <li>Weekly JSON issue payload (schema-stable) when keyed</li>
-            <li>Optional webhook push on publish (Pro · when keyed)</li>
-            <li>Designed for MCP tools &amp; agent pipelines</li>
-          </ul>
-        </div>
-
-        <p class="muted">
-          Spec: <code>PRODUCTS.md</code> · Schema: <code>agent-feed/schema.json</code>
-        </p>
-
-        <a class="btn primary block" href="https://t.me/CapitalFlowDeskBot" target="_blank" rel="noopener">
-          Open @CapitalFlowDeskBot →
-        </a>
-        <a class="btn ghost block" href="https://t.me/Mohammad_GNA" target="_blank" rel="noopener">
-          Or talk B2B with @Mohammad_GNA →
-        </a>
-        <p class="nfa">Not financial advice. Data feed is research framing only.</p>
-      </section>
-    </main>
-
-    <nav class="tabbar" aria-label="Primary">
-      <button type="button" class="tab active" data-nav="home">Home</button>
-      <button type="button" class="tab" data-nav="subscribe">Subscribe</button>
-      <button type="button" class="tab" data-nav="sample">Sample</button>
-      <button type="button" class="tab" data-nav="agents">Agents</button>
-    </nav>
+  <div class="card">
+    <div class="price">19 USDT intro · then 29 USDT / month</div>
+    <p class="muted">Human Members · paid in USDT on <strong>TRC-20 (Tron)</strong> only.</p>
+    <p class="muted">Also: Agent Feed for bots/MCPs — <strong>99</strong> / <strong>299</strong> USDT/mo (draft · keyed after confirm, not an instant live feed).</p>
+    <div class="row">
+      <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">Intro 19 → bot</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">Standard 29 → bot</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent 99 → bot</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent 299 → bot</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskHQ">Free teasers</a>
+    </div>
   </div>
-  <script src="js/app.js"></script>
+
+  <div class="card">
+    <h2>What’s included</h2>
+    <ul>
+      <li>Weekly capital-flow brief (majors + stablecoin lens)</li>
+      <li>2–3 narratives with thesis, support, <strong>invalidation</strong></li>
+      <li>Next-week watch list</li>
+      <li>Private Telegram delivery after on-chain confirm</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Pay here (USDT · TRC-20)</h2>
+    <p class="wallet" id="wallet">TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t</p>
+    <p class="warn">Send USDT on TRC-20 only. Other networks can lose funds. Check every character. We never DM you a “new wallet.”</p>
+    <h2>After payment (one intake path)</h2>
+    <ol>
+      <li>Send <strong>19 USDT</strong> (intro) or <strong>29 USDT</strong> (standard) to the address above</li>
+      <li>Open <a href="https://t.me/CapitalFlowDeskBot?start=pay_19"><strong>@CapitalFlowDeskBot</strong></a> → paste the TxID (plan is pre-selected via deep link)</li>
+      <li>After Tron confirm, you get the private Members invite by DM</li>
+    </ol>
+    <p class="muted">Backup (if bot is slow): DM <a href="https://t.me/Mohammad_GNA">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle — never paste anyone else’s handle as yours.</p>
+    <div class="row">
+      <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">I paid 19 — send TxID</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">I paid 29 — send TxID</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">I paid 99 — send TxID</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">I paid 299 — send TxID</a>
+    </div>
+  </div>
+
+  <p class="muted"><strong>Not financial advice.</strong> Research and education only. Crypto is volatile. You are responsible for your own decisions. Members invite is never posted on free surfaces.</p>
+</main>
 </body>
 </html>
