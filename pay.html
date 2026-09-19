@@ -46,7 +46,7 @@
 
   <div class="card" id="agent-feed">
     <h2>Agent Feed (machines / MCP / bots) · draft</h2>
-    <p class="muted">Supply shock → capital-flow judgment as <strong>UnlockFlowEvent</strong> JSON — not another unlock calendar or signal API. Soft path only; we do not invent live keys here.</p>
+    <p class="muted">Supply shock → capital-flow judgment as <strong>UnlockFlowEvent</strong> JSON — not another unlock calendar or signal API. Soft path only: <strong>draft · access keyed by admin after confirm (not an instant live feed)</strong>. We do not invent live keys here.</p>
     <ul>
       <li><strong>Starter · 99 USDT/mo (draft)</strong> — keyed onboarding after confirm (not an instant live feed); schema-stable v1 sample</li>
       <li><strong>Pro · 299 USDT/mo (draft)</strong> — webhook when keyed after confirm</li>
@@ -57,7 +57,7 @@
       <a class="btn ghost" href="./agent-feed/schema.json">Schema v1</a>
       <a class="btn ghost" href="./agent-feed/example-unlock-event.json">Single event sample</a>
     </div>
-    <p class="muted" style="margin-top:12px;">When ready, open the bot with the tier pre-selected — pay USDT TRC-20, paste TxID; admin onboards credentials after confirm.</p>
+    <p class="muted" style="margin-top:12px;">When ready, open the bot with the tier pre-selected — pay USDT TRC-20, paste TxID; draft · access keyed by admin after confirm (not an instant live feed).</p>
     <div class="row">
       <a class="btn ghost plan-cta" data-plan="99" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent Feed Starter 99 → bot</a>
       <a class="btn ghost plan-cta" data-plan="299" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent Feed Pro 299 → bot</a>
@@ -79,7 +79,7 @@
     <ol>
       <li id="step-amount">Copy the wallet → send the matching amount on TRC-20: <strong>19</strong> / <strong>29</strong> (Members) or <strong>99</strong> / <strong>299</strong> (Agent Feed)</li>
       <li>Open <a id="step-bot" href="https://t.me/CapitalFlowDeskBot"><strong>@CapitalFlowDeskBot</strong></a> → paste the TxID (plan is pre-selected via <code>pay_*</code>)</li>
-      <li>After Tron confirm: Members get private invite by DM · Agent Feed buyers get admin onboarding for pull/webhook credentials</li>
+      <li>After Tron confirm: Members get private invite by DM · Agent Feed buyers get keyed admin onboarding for pull/webhook credentials (not an instant live feed)</li>
     </ol>
     <p class="muted">Backup (if bot is slow): DM <a href="https://t.me/Mohammad_GNA">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle — never paste anyone else’s handle as yours.</p>
     <div class="row" id="paid-row">
@@ -98,8 +98,8 @@
   var LABELS = {
     "19": "Members intro · send exactly 19 USDT (TRC-20)",
     "29": "Members standard · send exactly 29 USDT (TRC-20)",
-    "99": "Agent Feed Starter · send exactly 99 USDT (TRC-20)",
-    "299": "Agent Feed Pro · send exactly 299 USDT (TRC-20)"
+    "99": "Agent Feed Starter (draft · keyed) · send exactly 99 USDT (TRC-20)",
+    "299": "Agent Feed Pro (draft · keyed) · send exactly 299 USDT (TRC-20)"
   };
   var btn = document.getElementById("btn-copy");
   var btnAmt = document.getElementById("btn-copy-amount");
