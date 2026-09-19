@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capitalflowdesk.example/schemas/unlock-flow-event.json",
+  "title": "UnlockFlowEvent",
+  "description": "Scout-approved Capital Flow Desk Agent Feed event v1. Supply-shock unlock window framed as capital-flow judgment for bots/MCPs/trading AIs. Research framing only — not trade signals. NFA.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "schema_version",
+    "asset",
+    "asset_name",
+    "chain",
+    "unlock_ts",
+    "horizon",
+    "observed_at",
+    "update_freq",
+    "value_usd",
+    "amount_tokens",
+    "pct_circulating",
+    "vtmc",
+    "allocation",
+    "vesting_type",
+    "precision_grade",
+    "sell_pressure_score",
+    "confidence",
+    "pre_event_drift_note",
+    "invalidation",
+    "evidence",
+    "sources",
+    "disclaimer",
+    "webhook_topic"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable unique id for this unlock×flow judgment event (e.g. uf_YYYYMMDD_asset_horizon)."
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1",
+      "description": "UnlockFlowEvent schema major version."
+    },
+    "asset": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Ticker / symbol (uppercase preferred)."
+    },
+    "asset_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable project name."
+    },
+    "chain": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary settlement / vesting chain (e.g. ethereum, solana, bsc)."
+    },
+    "contract_address": {
+      "type": ["string", "null"],
+      "description": "Optional token contract address when known and relevant."
+    },
+    "unlock_ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 unlock / cliff timestamp (prefer Asia/Dubai offset when desk-local)."
+    },
+    "horizon": {
+      "type": "string",
+      "enum": ["T-30", "T-7", "T-48h", "T0", "T+7"],
+      "description": "Relative window for this judgment pass."
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this event payload was assembled / last refreshed."
+    },
+    "update_freq": {
+      "type": "string",
+      "description": "Expected refresh cadence for this horizon (e.g. daily, twice_daily, on_publish)."
+    },
+    "value_usd": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Notional unlock size in USD at observation pricing."
+    },
+    "amount_tokens": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Token amount unlocking in this event / window."
+    },
+    "pct_circulating": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Unlock as percent of circulating supply at observe time."
+    },
+    "vtmc": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Unlock value as percent of (or ratio vs) fully diluted / relevant market cap framing — desk uses value-to-market-cap style %."
+    },
+    "float_depth_usd": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Optional estimated liquid float / book depth USD near spot for pressure context."
+    },
+    "allocation": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/allocation_bucket" },
+      "description": "Bucket mix of unlocking supply."
+    },
+    "vesting_type": {
+      "type": "string",
+      "enum": ["cliff", "linear", "mixed", "unknown"],
+      "description": "Dominant vesting mechanic for this unlock."
+    },
+    "precision_grade": {
+      "type": "string",
+      "enum": ["exact", "estimate", "disclosed_ambiguous"],
+      "description": "How precise the size / schedule fields are vs public disclosure."
+    },
+    "sell_pressure_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Editorial 0–100 sell-pressure judgment from size + recipient behavior + venue context. Not a trade signal."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Editorial confidence in the flow judgment, not trade confidence."
+    },
+    "cex_inflow_z": {
+      "type": ["number", "null"],
+      "description": "Optional z-score of recent CEX inflow vs baseline for labeled / inferred recipients."
+    },
+    "recipient_to_cex": {
+      "type": ["boolean", "null"],
+      "description": "Optional whether material recipient wallets show CEX deposit behavior in the window."
+    },
+    "pre_event_drift_note": {
+      "type": "string",
+      "description": "Short note on price/flow drift into the unlock window."
+    },
+    "invalidation": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What would falsify or retire this sell-pressure framing."
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Bullet evidence supporting the judgment."
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "human_memo_ref": {
+      "type": ["string", "null"],
+      "description": "Optional path/id of the human markdown memo / VIP window note."
+    },
+    "disclaimer": {
+      "type": "string",
+      "const": "NFA",
+      "description": "Fixed short disclaimer token; expand in consumer UI as Not Financial Advice."
+    },
+    "webhook_topic": {
+      "type": "string",
+      "const": "cfd.unlock_flow.v1",
+      "description": "Pro webhook topic name for this schema."
+    },
+    "admin_contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "telegram": { "type": "string", "const": "@Mohammad_GNA" },
+        "url": { "type": "string", "const": "https://t.me/Mohammad_GNA" }
+      }
+    },
+    "illustrative": {
+      "type": "boolean",
+      "description": "If true, payload is a sample / illustrative only — do not treat as live desk output."
+    }
+  },
+  "$defs": {
+    "allocation_bucket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bucket", "pct"],
+      "properties": {
+        "bucket": {
+          "type": "string",
+          "description": "e.g. team, investor, ecosystem, foundation, community, advisor, other"
+        },
+        "pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Share of this unlock event."
+        },
+        "recipient_label": {
+          "type": ["string", "null"],
+          "description": "Optional labeled recipient / cohort."
+        },
+        "vesting_type": {
+          "type": ["string", "null"],
+          "enum": ["cliff", "linear", "mixed", "unknown", null],
+          "description": "Optional override when bucket vesting differs from event-level vesting_type."
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "url": { "type": ["string", "null"], "format": "uri" },
+        "retrieved_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "event_id": "uf_20261015_arb_t7",
+      "schema_version": "1",
+      "asset": "ARB",
+      "asset_name": "Arbitrum",
+      "chain": "ethereum",
+      "contract_address": "0xB50721BCf8d764E449A1A77Df4C2fE2971b42646",
+      "unlock_ts": "2026-10-15T12:00:00+04:00",
+      "horizon": "T-7",
+      "observed_at": "2026-10-08T16:00:00+04:00",
+      "update_freq": "daily",
+      "value_usd": 185000000,
+      "amount_tokens": 92500000,
+      "pct_circulating": 2.4,
+      "vtmc": 1.1,
+      "float_depth_usd": 42000000,
+      "allocation": [
+        {
+          "bucket": "investor",
+          "pct": 55,
+          "recipient_label": "early backers (vesting cohort)",
+          "vesting_type": "cliff"
+        },
+        {
+          "bucket": "team",
+          "pct": 30,
+          "recipient_label": "core contributors",
+          "vesting_type": "linear"
+        },
+        {
+          "bucket": "ecosystem",
+          "pct": 15,
+          "recipient_label": "DAO programs",
+          "vesting_type": "mixed"
+        }
+      ],
+      "vesting_type": "mixed",
+      "precision_grade": "estimate",
+      "sell_pressure_score": 62,
+      "confidence": "medium",
+      "cex_inflow_z": 1.4,
+      "recipient_to_cex": true,
+      "pre_event_drift_note": "Spot lagged majors 3d into window; labeled investor cohort showed elevated CEX deposit z vs 30d baseline while OI rose without matching spot bid.",
+      "invalidation": "Cohort wallets idle on-chain through T0 with CEX inflow z reverting below 0.5 and unlock notional revised below 1% circulating on primary disclosure.",
+      "evidence": [
+        "Unlock notional ~$185M (~2.4% circ) at observe pricing",
+        "Investor bucket majority of event; historical same-cohort deposits preceded prior unlocks",
+        "Peer-venue USDT/USDC float flat — pressure is token-specific, not aggregate stable expansion"
+      ],
+      "sources": [
+        {
+          "name": "Project vesting disclosure (illustrative)",
+          "url": "https://docs.arbitrum.foundation/",
+          "retrieved_at": "2026-10-08T12:00:00+04:00"
+        },
+        {
+          "name": "Public CEX inflow screen (illustrative)",
+          "url": null,
+          "retrieved_at": "2026-10-08T15:30:00+04:00"
+        }
+      ],
+      "human_memo_ref": "issues/issue-01-capital-flow.md",
+      "disclaimer": "NFA",
+      "webhook_topic": "cfd.unlock_flow.v1",
+      "admin_contact": {
+        "telegram": "@Mohammad_GNA",
+        "url": "https://t.me/Mohammad_GNA"
+      },
+      "illustrative": true
+    }
+  ]
+}

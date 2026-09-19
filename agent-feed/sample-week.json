@@ -1,0 +1,214 @@
+{
+  "feed": "cfd.agent_feed.v1",
+  "week_id": "2026-W38-sample",
+  "week_label": "Sample week (illustrative)",
+  "published_at": "2026-09-19T18:00:00+04:00",
+  "schema_version": "1",
+  "illustrative": true,
+  "disclaimer": "NFA — research framing only. Not financial advice. Illustrative sample for buyers to preview shape before pay. Ignore for live decisions.",
+  "admin_contact": {
+    "telegram": "@Mohammad_GNA",
+    "url": "https://t.me/Mohammad_GNA"
+  },
+  "tiers": {
+    "starter": {
+      "price_usdt_mo": 99,
+      "includes": "Authenticated UnlockFlowEvent pull (URL or file drop); schema-stable v1",
+      "cta": "https://t.me/CapitalFlowDeskBot?start=pay_99"
+    },
+    "pro": {
+      "price_usdt_mo": 299,
+      "includes": "Starter + webhook push (cfd.unlock_flow.v1) on publish / horizon refresh",
+      "cta": "https://t.me/CapitalFlowDeskBot?start=pay_299"
+    }
+  },
+  "events": [
+    {
+      "event_id": "uf_20260920_zro_t0",
+      "schema_version": "1",
+      "asset": "ZRO",
+      "asset_name": "LayerZero",
+      "chain": "ethereum",
+      "contract_address": null,
+      "unlock_ts": "2026-09-20T15:00:00+04:00",
+      "horizon": "T0",
+      "observed_at": "2026-09-20T12:00:00+04:00",
+      "update_freq": "intraday",
+      "value_usd": 26400000,
+      "amount_tokens": 0,
+      "pct_circulating": 4.22,
+      "vtmc": 0.9,
+      "float_depth_usd": 18000000,
+      "allocation": [
+        {
+          "bucket": "investor",
+          "pct": 60,
+          "recipient_label": "early investors (tracker cohort)",
+          "vesting_type": "cliff"
+        },
+        {
+          "bucket": "team",
+          "pct": 25,
+          "recipient_label": "core contributors",
+          "vesting_type": "linear"
+        },
+        {
+          "bucket": "ecosystem",
+          "pct": 15,
+          "recipient_label": "community / programs",
+          "vesting_type": "mixed"
+        }
+      ],
+      "vesting_type": "mixed",
+      "precision_grade": "estimate",
+      "sell_pressure_score": 58,
+      "confidence": "medium",
+      "cex_inflow_z": 0.8,
+      "recipient_to_cex": false,
+      "pre_event_drift_note": "Calendar confirmed on aggregator screens; issuer tranche detail thin. Spot quiet vs majors into T0; no clear labeled cohort → CEX deposit spike yet.",
+      "invalidation": "Primary disclosure revises notional below ~2% circ, or labeled recipient wallets stay idle through T+48h with CEX inflow z < 0.3.",
+      "evidence": [
+        "Aggregator weekly digest flags ~$26.4M / ~4.22% unlocked-supply window (price-dated; moves with spot)",
+        "Tranche mix not fully issuer-confirmed — treat allocation as tracker estimate",
+        "Stablecoin float on peer venues flat — pressure read is token-specific if it appears"
+      ],
+      "sources": [
+        {
+          "name": "Public unlock aggregator (illustrative)",
+          "url": null,
+          "retrieved_at": "2026-09-19T16:00:00+04:00"
+        }
+      ],
+      "human_memo_ref": null,
+      "disclaimer": "NFA",
+      "webhook_topic": "cfd.unlock_flow.v1",
+      "illustrative": true
+    },
+    {
+      "event_id": "uf_20261015_arb_t7",
+      "schema_version": "1",
+      "asset": "ARB",
+      "asset_name": "Arbitrum",
+      "chain": "ethereum",
+      "contract_address": "0xB50721BCf8d764E449A1A77Df4C2fE2971b42646",
+      "unlock_ts": "2026-10-15T12:00:00+04:00",
+      "horizon": "T-7",
+      "observed_at": "2026-10-08T16:00:00+04:00",
+      "update_freq": "daily",
+      "value_usd": 185000000,
+      "amount_tokens": 92500000,
+      "pct_circulating": 2.4,
+      "vtmc": 1.1,
+      "float_depth_usd": 42000000,
+      "allocation": [
+        {
+          "bucket": "investor",
+          "pct": 55,
+          "recipient_label": "early backers (vesting cohort)",
+          "vesting_type": "cliff"
+        },
+        {
+          "bucket": "team",
+          "pct": 30,
+          "recipient_label": "core contributors",
+          "vesting_type": "linear"
+        },
+        {
+          "bucket": "ecosystem",
+          "pct": 15,
+          "recipient_label": "DAO programs",
+          "vesting_type": "mixed"
+        }
+      ],
+      "vesting_type": "mixed",
+      "precision_grade": "estimate",
+      "sell_pressure_score": 62,
+      "confidence": "medium",
+      "cex_inflow_z": 1.4,
+      "recipient_to_cex": true,
+      "pre_event_drift_note": "Spot lagged majors 3d into window; labeled investor cohort showed elevated CEX deposit z vs 30d baseline while OI rose without matching spot bid.",
+      "invalidation": "Cohort wallets idle on-chain through T0 with CEX inflow z reverting below 0.5 and unlock notional revised below 1% circulating on primary disclosure.",
+      "evidence": [
+        "Unlock notional ~$185M (~2.4% circ) at observe pricing",
+        "Investor bucket majority of event; historical same-cohort deposits preceded prior unlocks",
+        "Peer-venue USDT/USDC float flat — pressure is token-specific, not aggregate stable expansion"
+      ],
+      "sources": [
+        {
+          "name": "Project vesting disclosure (illustrative)",
+          "url": "https://docs.arbitrum.foundation/",
+          "retrieved_at": "2026-10-08T12:00:00+04:00"
+        },
+        {
+          "name": "Public CEX inflow screen (illustrative)",
+          "url": null,
+          "retrieved_at": "2026-10-08T15:30:00+04:00"
+        }
+      ],
+      "human_memo_ref": "issues/issue-01-capital-flow.md",
+      "disclaimer": "NFA",
+      "webhook_topic": "cfd.unlock_flow.v1",
+      "illustrative": true
+    },
+    {
+      "event_id": "uf_20260927_demo_t48h",
+      "schema_version": "1",
+      "asset": "DEMO",
+      "asset_name": "Desk Demo Unlock",
+      "chain": "ethereum",
+      "contract_address": null,
+      "unlock_ts": "2026-09-29T12:00:00+04:00",
+      "horizon": "T-48h",
+      "observed_at": "2026-09-27T12:00:00+04:00",
+      "update_freq": "daily",
+      "value_usd": 42000000,
+      "amount_tokens": 10000000,
+      "pct_circulating": 1.8,
+      "vtmc": 0.7,
+      "float_depth_usd": 25000000,
+      "allocation": [
+        {
+          "bucket": "team",
+          "pct": 40,
+          "recipient_label": "core team cliff",
+          "vesting_type": "cliff"
+        },
+        {
+          "bucket": "investor",
+          "pct": 40,
+          "recipient_label": "seed round",
+          "vesting_type": "cliff"
+        },
+        {
+          "bucket": "ecosystem",
+          "pct": 20,
+          "recipient_label": "grants",
+          "vesting_type": "linear"
+        }
+      ],
+      "vesting_type": "cliff",
+      "precision_grade": "illustrative",
+      "sell_pressure_score": 45,
+      "confidence": "low",
+      "cex_inflow_z": 0.2,
+      "recipient_to_cex": false,
+      "pre_event_drift_note": "Placeholder event showing schema fields only. No live market read.",
+      "invalidation": "Any real issuer disclosure that contradicts this illustrative row — discard for decisions.",
+      "evidence": [
+        "Schema shape demo — not a live unlock judgment",
+        "Included so agents can parse a multi-event week envelope"
+      ],
+      "sources": [
+        {
+          "name": "Capital Flow Desk sample week (illustrative)",
+          "url": null,
+          "retrieved_at": "2026-09-20T00:40:00+04:00"
+        }
+      ],
+      "human_memo_ref": null,
+      "disclaimer": "NFA",
+      "webhook_topic": "cfd.unlock_flow.v1",
+      "illustrative": true
+    }
+  ]
+}

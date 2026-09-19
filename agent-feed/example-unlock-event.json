@@ -1,0 +1,70 @@
+{
+  "event_id": "uf_20261015_arb_t7",
+  "schema_version": "1",
+  "asset": "ARB",
+  "asset_name": "Arbitrum",
+  "chain": "ethereum",
+  "contract_address": "0xB50721BCf8d764E449A1A77Df4C2fE2971b42646",
+  "unlock_ts": "2026-10-15T12:00:00+04:00",
+  "horizon": "T-7",
+  "observed_at": "2026-10-08T16:00:00+04:00",
+  "update_freq": "daily",
+  "value_usd": 185000000,
+  "amount_tokens": 92500000,
+  "pct_circulating": 2.4,
+  "vtmc": 1.1,
+  "float_depth_usd": 42000000,
+  "allocation": [
+    {
+      "bucket": "investor",
+      "pct": 55,
+      "recipient_label": "early backers (vesting cohort)",
+      "vesting_type": "cliff"
+    },
+    {
+      "bucket": "team",
+      "pct": 30,
+      "recipient_label": "core contributors",
+      "vesting_type": "linear"
+    },
+    {
+      "bucket": "ecosystem",
+      "pct": 15,
+      "recipient_label": "DAO programs",
+      "vesting_type": "mixed"
+    }
+  ],
+  "vesting_type": "mixed",
+  "precision_grade": "estimate",
+  "sell_pressure_score": 62,
+  "confidence": "medium",
+  "cex_inflow_z": 1.4,
+  "recipient_to_cex": true,
+  "pre_event_drift_note": "Spot lagged majors 3d into window; labeled investor cohort showed elevated CEX deposit z vs 30d baseline while OI rose without matching spot bid.",
+  "invalidation": "Cohort wallets idle on-chain through T0 with CEX inflow z reverting below 0.5 and unlock notional revised below 1% circulating on primary disclosure.",
+  "evidence": [
+    "Unlock notional ~$185M (~2.4% circ) at observe pricing",
+    "Investor bucket majority of event; historical same-cohort deposits preceded prior unlocks",
+    "Peer-venue USDT/USDC float flat — pressure is token-specific, not aggregate stable expansion"
+  ],
+  "sources": [
+    {
+      "name": "Project vesting disclosure (illustrative)",
+      "url": "https://docs.arbitrum.foundation/",
+      "retrieved_at": "2026-10-08T12:00:00+04:00"
+    },
+    {
+      "name": "Public CEX inflow screen (illustrative)",
+      "url": null,
+      "retrieved_at": "2026-10-08T15:30:00+04:00"
+    }
+  ],
+  "human_memo_ref": "issues/issue-01-capital-flow.md",
+  "disclaimer": "NFA",
+  "webhook_topic": "cfd.unlock_flow.v1",
+  "admin_contact": {
+    "telegram": "@Mohammad_GNA",
+    "url": "https://t.me/Mohammad_GNA"
+  },
+  "illustrative": true
+}

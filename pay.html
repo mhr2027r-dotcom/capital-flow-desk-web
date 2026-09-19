@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Capital Flow Desk — Weekly Crypto Research (USDT)</title>
-<meta name="description" content="Institutional-style weekly capital-flow research. 19 USDT intro · 29 USDT/mo. Pay USDT TRC-20, send TxID to @CapitalFlowDeskBot. NFA."/>
+<meta name="description" content="Capital-flow research for humans (19/29) and Agent Feed JSON for bots (99/299). Preview sample week before pay. USDT TRC-20 → @CapitalFlowDeskBot. NFA."/>
 <style>
   :root { color-scheme: dark; }
   body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; background: #0b0f14; color: #e8eef5; line-height: 1.55; }
@@ -33,24 +33,41 @@
   <div class="card">
     <div class="price">19 USDT intro · then 29 USDT / month</div>
     <p class="muted">Human Members · paid in USDT on <strong>TRC-20 (Tron)</strong> only.</p>
-    <p class="muted">Also: Agent Feed for bots/MCPs — <strong>99</strong> / <strong>299</strong> USDT/mo.</p>
     <div class="row">
       <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">Intro 19 → bot</a>
       <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">Standard 29 → bot</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent 99 → bot</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent 299 → bot</a>
       <a class="btn ghost" href="https://t.me/CapitalFlowDeskHQ">Free teasers</a>
     </div>
   </div>
 
   <div class="card">
-    <h2>What’s included</h2>
+    <h2>What’s included (Members)</h2>
     <ul>
       <li>Weekly capital-flow brief (majors + stablecoin lens)</li>
       <li>2–3 narratives with thesis, support, <strong>invalidation</strong></li>
       <li>Next-week watch list</li>
       <li>Private Telegram delivery after on-chain confirm</li>
     </ul>
+  </div>
+
+  <div class="card" id="agent-feed">
+    <h2>Agent Feed (machines / MCP / bots)</h2>
+    <p class="muted">Supply shock → capital-flow judgment as <strong>UnlockFlowEvent</strong> JSON — not another unlock calendar or signal API. Soft path only; we do not invent live keys here.</p>
+    <ul>
+      <li><strong>Starter · 99 USDT/mo</strong> — authenticated UnlockFlowEvent pull (URL or file drop); schema-stable v1</li>
+      <li><strong>Pro · 299 USDT/mo</strong> — Starter + webhook push (<code>cfd.unlock_flow.v1</code>) on publish / horizon refresh</li>
+    </ul>
+    <p class="muted">Preview a public sample week before you pay (illustrative · <code>illustrative: true</code> · ignore for live decisions):</p>
+    <div class="row">
+      <a class="btn ghost" href="./agent-feed/sample-week.json">Preview sample week JSON</a>
+      <a class="btn ghost" href="./agent-feed/schema.json">Schema v1</a>
+      <a class="btn ghost" href="./agent-feed/example-unlock-event.json">Single event sample</a>
+    </div>
+    <p class="muted" style="margin-top:12px;">When ready, open the bot with the tier pre-selected — pay USDT TRC-20, paste TxID; admin onboards credentials after confirm.</p>
+    <div class="row">
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent Feed Starter 99 → bot</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent Feed Pro 299 → bot</a>
+    </div>
   </div>
 
   <div class="card">
@@ -63,16 +80,16 @@
     <p class="warn">Send USDT on TRC-20 only. Other networks can lose funds. Check every character. We never DM you a “new wallet.”</p>
     <h2>After payment (one intake path)</h2>
     <ol>
-      <li>Copy the wallet → send <strong>19</strong> (intro), <strong>29</strong> (standard), <strong>99</strong>, or <strong>299</strong> USDT on TRC-20</li>
-      <li>Open <a href="https://t.me/CapitalFlowDeskBot?start=pay_19"><strong>@CapitalFlowDeskBot</strong></a> → paste the TxID (plan is pre-selected via deep link)</li>
-      <li>After Tron confirm, you get the private Members invite by DM (Agent Feed: admin onboards)</li>
+      <li>Copy the wallet → send the matching amount on TRC-20: <strong>19</strong> / <strong>29</strong> (Members) or <strong>99</strong> / <strong>299</strong> (Agent Feed)</li>
+      <li>Open <a href="https://t.me/CapitalFlowDeskBot"><strong>@CapitalFlowDeskBot</strong></a> via the soft CTA above → paste the TxID (plan is pre-selected via <code>pay_*</code>)</li>
+      <li>After Tron confirm: Members get private invite by DM · Agent Feed buyers get admin onboarding for pull/webhook credentials</li>
     </ol>
     <p class="muted">Backup (if bot is slow): DM <a href="https://t.me/Mohammad_GNA">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle — never paste anyone else’s handle as yours.</p>
     <div class="row">
       <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">I paid 19 — send TxID</a>
       <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">I paid 29 — send TxID</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">I paid 99 — send TxID</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">I paid 299 — send TxID</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">I paid Agent 99 — send TxID</a>
+      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">I paid Agent 299 — send TxID</a>
     </div>
   </div>
 
