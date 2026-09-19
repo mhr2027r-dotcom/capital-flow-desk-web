@@ -13,14 +13,18 @@
   h2 { font-size: 1.1rem; margin: 0 0 10px; }
   .sub { color: #9db0c5; margin-bottom: 28px; }
   .card { background: #121a22; border: 1px solid #243041; border-radius: 14px; padding: 20px 18px; margin: 18px 0; }
+  .card.selected { border-color: #1a6feb; box-shadow: 0 0 0 1px #1a6feb44; }
   .price { font-size: 1.35rem; font-weight: 700; }
   .wallet { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; background: #0b0f14; border: 1px solid #2a3a4d; padding: 12px 14px; border-radius: 10px; font-size: 0.95rem; }
   .warn { color: #f0c674; font-size: 0.92rem; }
   .muted { color: #8aa0b6; font-size: 0.9rem; }
+  .chip { display:none; margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: #0f1b2a; border: 1px solid #1a6feb; color: #cfe0f2; font-weight: 600; }
+  .chip.on { display:block; }
   ol { padding-left: 1.2rem; }
   a { color: #7db7ff; }
   .btn { display:inline-block; margin: 6px 8px 0 0; padding:12px 16px; background:#1a6feb; color:#fff; text-decoration:none; border-radius:10px; font-weight:600; border:0; cursor:pointer; font-size:0.95rem; }
   .btn.ghost { background: transparent; border: 1px solid #3a5168; color: #cfe0f2; }
+  .btn.primary-plan { background:#1a6feb; border: 1px solid #1a6feb; color:#fff; }
   .row { margin-top: 12px; }
   #copy-status { margin-left: 8px; color: #7dcea0; font-size: 0.9rem; }
 </style>
@@ -30,12 +34,12 @@
   <h1>Capital Flow Desk</h1>
   <p class="sub">See the flow before you narrate the candle. Sharp. Calm. No hype. Research only — not financial advice.</p>
 
-  <div class="card">
+  <div class="card" id="members-card">
     <div class="price">19 USDT intro · then 29 USDT / month</div>
     <p class="muted">Human Members · paid in USDT on <strong>TRC-20 (Tron)</strong> only.</p>
     <div class="row">
-      <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">Intro 19 → bot</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">Standard 29 → bot</a>
+      <a class="btn plan-cta" data-plan="19" href="https://t.me/CapitalFlowDeskBot?start=pay_19">Intro 19 → bot</a>
+      <a class="btn ghost plan-cta" data-plan="29" href="https://t.me/CapitalFlowDeskBot?start=pay_29">Standard 29 → bot</a>
       <a class="btn ghost" href="https://t.me/CapitalFlowDeskHQ">Free teasers</a>
     </div>
   </div>
@@ -65,13 +69,14 @@
     </div>
     <p class="muted" style="margin-top:12px;">When ready, open the bot with the tier pre-selected — pay USDT TRC-20, paste TxID; admin onboards credentials after confirm.</p>
     <div class="row">
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent Feed Starter 99 → bot</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent Feed Pro 299 → bot</a>
+      <a class="btn ghost plan-cta" data-plan="99" href="https://t.me/CapitalFlowDeskBot?start=pay_99">Agent Feed Starter 99 → bot</a>
+      <a class="btn ghost plan-cta" data-plan="299" href="https://t.me/CapitalFlowDeskBot?start=pay_299">Agent Feed Pro 299 → bot</a>
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="pay-card">
     <h2>Pay here (USDT · TRC-20)</h2>
+    <div class="chip" id="plan-chip" aria-live="polite"></div>
     <p class="wallet" id="wallet">TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t</p>
     <div class="row">
       <button type="button" class="btn ghost" id="btn-copy">Copy address</button>
@@ -80,16 +85,16 @@
     <p class="warn">Send USDT on TRC-20 only. Other networks can lose funds. Check every character. We never DM you a “new wallet.”</p>
     <h2>After payment (one intake path)</h2>
     <ol>
-      <li>Copy the wallet → send the matching amount on TRC-20: <strong>19</strong> / <strong>29</strong> (Members) or <strong>99</strong> / <strong>299</strong> (Agent Feed)</li>
-      <li>Open <a href="https://t.me/CapitalFlowDeskBot"><strong>@CapitalFlowDeskBot</strong></a> via the soft CTA above → paste the TxID (plan is pre-selected via <code>pay_*</code>)</li>
+      <li id="step-amount">Copy the wallet → send the matching amount on TRC-20: <strong>19</strong> / <strong>29</strong> (Members) or <strong>99</strong> / <strong>299</strong> (Agent Feed)</li>
+      <li>Open <a id="step-bot" href="https://t.me/CapitalFlowDeskBot"><strong>@CapitalFlowDeskBot</strong></a> via the soft CTA above → paste the TxID (plan is pre-selected via <code>pay_*</code>)</li>
       <li>After Tron confirm: Members get private invite by DM · Agent Feed buyers get admin onboarding for pull/webhook credentials</li>
     </ol>
     <p class="muted">Backup (if bot is slow): DM <a href="https://t.me/Mohammad_GNA">@Mohammad_GNA</a> with TxID + amount + <em>your</em> @handle — never paste anyone else’s handle as yours.</p>
-    <div class="row">
-      <a class="btn" href="https://t.me/CapitalFlowDeskBot?start=pay_19">I paid 19 — send TxID</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_29">I paid 29 — send TxID</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_99">I paid Agent 99 — send TxID</a>
-      <a class="btn ghost" href="https://t.me/CapitalFlowDeskBot?start=pay_299">I paid Agent 299 — send TxID</a>
+    <div class="row" id="paid-row">
+      <a class="btn plan-paid" data-plan="19" href="https://t.me/CapitalFlowDeskBot?start=pay_19">I paid 19 — send TxID</a>
+      <a class="btn ghost plan-paid" data-plan="29" href="https://t.me/CapitalFlowDeskBot?start=pay_29">I paid 29 — send TxID</a>
+      <a class="btn ghost plan-paid" data-plan="99" href="https://t.me/CapitalFlowDeskBot?start=pay_99">I paid Agent 99 — send TxID</a>
+      <a class="btn ghost plan-paid" data-plan="299" href="https://t.me/CapitalFlowDeskBot?start=pay_299">I paid Agent 299 — send TxID</a>
     </div>
   </div>
 
@@ -98,6 +103,12 @@
 <script>
 (function () {
   var WALLET = "TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t";
+  var LABELS = {
+    "19": "Members intro · send exactly 19 USDT (TRC-20)",
+    "29": "Members standard · send exactly 29 USDT (TRC-20)",
+    "99": "Agent Feed Starter · send exactly 99 USDT (TRC-20)",
+    "299": "Agent Feed Pro · send exactly 299 USDT (TRC-20)"
+  };
   var btn = document.getElementById("btn-copy");
   var status = document.getElementById("copy-status");
   function done(ok) {
@@ -132,6 +143,52 @@
       }
     });
   }
+
+  function readPlan() {
+    try {
+      var q = new URLSearchParams(window.location.search);
+      var p = (q.get("plan") || q.get("amount") || "").replace(/^pay_/, "");
+      if (LABELS[p]) return p;
+      var h = (window.location.hash || "").replace(/^#/, "").replace(/^plan=/, "").replace(/^pay_/, "");
+      if (LABELS[h]) return h;
+    } catch (e) {}
+    return "";
+  }
+
+  function applyPlan(plan) {
+    if (!LABELS[plan]) return;
+    var chip = document.getElementById("plan-chip");
+    if (chip) {
+      chip.textContent = LABELS[plan];
+      chip.classList.add("on");
+    }
+    var step = document.getElementById("step-amount");
+    if (step) {
+      step.innerHTML = "Copy the wallet → send exactly <strong>" + plan + " USDT</strong> on TRC-20 only";
+    }
+    var bot = document.getElementById("step-bot");
+    if (bot) bot.href = "https://t.me/CapitalFlowDeskBot?start=pay_" + plan;
+    var payCard = document.getElementById("pay-card");
+    if (payCard) payCard.classList.add("selected");
+    if (plan === "19" || plan === "29") {
+      var mc = document.getElementById("members-card");
+      if (mc) mc.classList.add("selected");
+    }
+    if (plan === "99" || plan === "299") {
+      var ac = document.getElementById("agent-feed");
+      if (ac) ac.classList.add("selected");
+    }
+    document.querySelectorAll(".plan-cta, .plan-paid").forEach(function (el) {
+      var match = el.getAttribute("data-plan") === plan;
+      el.classList.toggle("ghost", !match);
+      el.classList.toggle("primary-plan", match);
+      if (match && el.classList.contains("plan-paid")) {
+        el.textContent = el.textContent.replace(/^I paid/, "✓ I paid");
+      }
+    });
+  }
+
+  applyPlan(readPlan());
 })();
 </script>
 </body>
