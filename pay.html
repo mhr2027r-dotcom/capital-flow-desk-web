@@ -68,8 +68,10 @@
     <h2>Pay here (USDT · TRC-20)</h2>
     <div class="chip" id="plan-chip" aria-live="polite"></div>
     <p class="wallet" id="wallet">TNY3pyHMVeJ3Ac5RXWuEigj11wPWnggs2t</p>
+    <p class="wallet" id="amount-box" hidden>Amount: —</p>
     <div class="row">
       <button type="button" class="btn ghost" id="btn-copy">Copy address</button>
+      <button type="button" class="btn ghost" id="btn-copy-amount" hidden>Copy amount</button>
       <span id="copy-status" aria-live="polite"></span>
     </div>
     <p class="warn">Send USDT on TRC-20 only. Other networks can lose funds. Check every character. We never DM you a “new wallet.”</p>
@@ -100,17 +102,21 @@
     "299": "Agent Feed Pro · send exactly 299 USDT (TRC-20)"
   };
   var btn = document.getElementById("btn-copy");
+  var btnAmt = document.getElementById("btn-copy-amount");
   var status = document.getElementById("copy-status");
-  function done(ok) {
+  var amountBox = document.getElementById("amount-box");
+  var currentPlan = "";
+  function done(ok, which) {
     if (!status) return;
     status.textContent = ok ? "Copied" : "Select & copy manually";
-    if (btn && ok) {
-      var prev = btn.textContent;
-      btn.textContent = "Copied ✓";
-      setTimeout(function () { btn.textContent = prev; status.textContent = ""; }, 1800);
+    var b = which === "amount" ? btnAmt : btn;
+    if (b && ok) {
+      var prev = b.textContent;
+      b.textContent = "Copied ✓";
+      setTimeout(function () { b.textContent = prev; status.textContent = ""; }, 1800);
     }
   }
-  function fallback(text) {
+  function fallback(text, which) {
     try {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -121,16 +127,23 @@
       ta.select();
       var ok = document.execCommand("copy");
       document.body.removeChild(ta);
-      done(ok);
-    } catch (e) { done(false); }
+      done(ok, which);
+    } catch (e) { done(false, which); }
+  }
+  function copyText(text, which) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true, which); }, function () { fallback(text, which); });
+    } else {
+      fallback(text, which);
+    }
   }
   if (btn) {
-    btn.addEventListener("click", function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(WALLET).then(function () { done(true); }, function () { fallback(WALLET); });
-      } else {
-        fallback(WALLET);
-      }
+    btn.addEventListener("click", function () { copyText(WALLET, "wallet"); });
+  }
+  if (btnAmt) {
+    btnAmt.addEventListener("click", function () {
+      if (!currentPlan) return;
+      copyText(currentPlan, "amount");
     });
   }
 
@@ -147,14 +160,23 @@
 
   function applyPlan(plan) {
     if (!LABELS[plan]) return;
+    currentPlan = plan;
     var chip = document.getElementById("plan-chip");
     if (chip) {
       chip.textContent = LABELS[plan];
       chip.classList.add("on");
     }
+    if (amountBox) {
+      amountBox.hidden = false;
+      amountBox.textContent = "Exact amount: " + plan + " USDT (TRC-20)";
+    }
+    if (btnAmt) {
+      btnAmt.hidden = false;
+      btnAmt.textContent = "Copy " + plan + " USDT";
+    }
     var step = document.getElementById("step-amount");
     if (step) {
-      step.innerHTML = "Copy the wallet → send exactly <strong>" + plan + " USDT</strong> on TRC-20 only";
+      step.innerHTML = "Copy the wallet + amount → send exactly <strong>" + plan + " USDT</strong> on TRC-20 only";
     }
     var bot = document.getElementById("step-bot");
     if (bot) bot.href = "https://t.me/CapitalFlowDeskBot?start=pay_" + plan;
