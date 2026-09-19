@@ -357,7 +357,7 @@
           <button type="button" class="chip" data-stars="250" aria-pressed="false">250 ★</button>
           <button type="button" class="chip" data-stars="500" aria-pressed="false">500 ★</button>
         </div>
-        <button type="button" class="cta is-soft" id="btn-tip" aria-live="polite">Coming soon</button>
+        <button type="button" class="cta" id="btn-tip" aria-live="polite">Tip with Stars</button>
         <p class="status" id="status" role="status"></p>
         <p class="note">No ads · no guilt · tips never required</p>
       </section>
@@ -384,10 +384,17 @@
   <script>
   (function () {
     /**
-     * Paste a Stars invoice link from Bot API createInvoiceLink / Converter here.
-     * Leave empty until you have a real link — the UI stays graceful.
+     * Live Stars invoice links from Bot API createInvoiceLink (pulse 03:05 Asia/Dubai).
+     * Payload desk_tip:jar:v1:{stars} — gratitude only, zero entitlement.
      */
-    var STARS_INVOICE_LINK = "https://t.me/$jduX1Dz2eFG3BQAAKQX1qwPuOCw";
+    var BOT_TIP_DEEP_LINK = "https://t.me/CapitalFlowDeskBot?start=tip";
+    var INVOICE_BY_STARS = {
+      "50": "https://t.me/$q3Sl5jz2eFG8BQAAMGIn1cOg68U",
+      "100": "https://t.me/$jwm1Mzz2eFG9BQAAFKfioch7fE0",
+      "250": "https://t.me/$e0zbTzz2eFG-BQAAgNAgew9wsns",
+      "500": "https://t.me/$NjsohDz2eFG_BQAALS2fRQ0j5G8"
+    };
+    var STARS_INVOICE_LINK = INVOICE_BY_STARS["50"];
     var INVOICE_PLACEHOLDER = STARS_INVOICE_LINK;
 
     var btn = document.getElementById("btn-tip");
@@ -397,8 +404,34 @@
     var selectedStars = 50;
     var toastTimer = null;
 
+    function invoiceFor(stars) {
+      var key = String(stars || selectedStars);
+      var link = INVOICE_BY_STARS[key];
+      if (typeof link === "string" && link.trim().length > 0) return link.trim();
+      if (typeof INVOICE_PLACEHOLDER === "string" && INVOICE_PLACEHOLDER.trim().length > 0) {
+        return INVOICE_PLACEHOLDER.trim();
+      }
+      return "";
+    }
+
     function hasInvoice() {
-      return typeof INVOICE_PLACEHOLDER === "string" && INVOICE_PLACEHOLDER.trim().length > 0;
+      return invoiceFor(selectedStars).length > 0;
+    }
+
+    function openBotTipDeepLink() {
+      var url = BOT_TIP_DEEP_LINK;
+      var tg = getTg();
+      try {
+        if (tg && typeof tg.openTelegramLink === "function") {
+          tg.openTelegramLink(url);
+          return;
+        }
+      } catch (e) { /* fall through */ }
+      try {
+        window.location.href = url;
+      } catch (e2) {
+        window.open(url, "_blank", "noopener");
+      }
     }
 
     function getTg() {
@@ -455,23 +488,23 @@
       if (live && tgOk) {
         btn.disabled = false;
         btn.classList.remove("is-soft");
-        btn.textContent = "Tip with Stars";
-        setStatus("Opens Telegram Stars checkout for " + selectedStars + " ★ (invoice amount set by bot).", "info");
+        btn.textContent = "Tip " + selectedStars + " ★";
+        setStatus("Opens Telegram Stars checkout for " + selectedStars + " ★. Gratitude only — no unlock.", "info");
       } else if (live && !tgOk) {
         btn.disabled = false;
-        btn.classList.add("is-soft");
-        btn.textContent = "Open in Telegram to tip";
-        setStatus("Stars tipping works inside Telegram. Open this page from the bot or menu button.");
+        btn.classList.remove("is-soft");
+        btn.textContent = "Open Tip Jar in Telegram";
+        setStatus("Stars checkout needs Telegram. Tap to open @CapitalFlowDeskBot · /tip.");
       } else if (!live && tgOk) {
         btn.disabled = false;
         btn.classList.add("is-soft");
-        btn.textContent = "Coming soon";
-        setStatus("Tip link not live yet — thank you for checking in.");
+        btn.textContent = "Open /tip in bot";
+        setStatus("Invoice map missing — open the bot Tip Jar instead.");
       } else {
         btn.disabled = false;
         btn.classList.add("is-soft");
-        btn.textContent = "Coming soon";
-        setStatus("Open in Telegram when tips go live. Nothing is required to browse.");
+        btn.textContent = "Open Tip Jar in Telegram";
+        setStatus("Open @CapitalFlowDeskBot with /tip. Tips are always optional.");
       }
     }
 
@@ -488,22 +521,26 @@
 
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
+        selectChip(chip);
         if (!hasInvoice()) {
-          selectChip(chip);
-          showToast("Tips aren’t live yet — amounts are preview only.");
+          showToast("Amount noted — open the bot /tip if checkout is unavailable.");
           return;
         }
-        selectChip(chip);
-        showToast("Amount noted. Checkout uses the desk invoice link.");
+        showToast(selectedStars + " ★ selected.");
       });
     });
 
     function openInvoiceSafe() {
       var tg = getTg();
-      var link = INVOICE_PLACEHOLDER.trim();
+      var link = invoiceFor(selectedStars);
+      if (!link) {
+        setStatus("No invoice for this amount — opening bot /tip instead.");
+        openBotTipDeepLink();
+        return;
+      }
       if (!tg || typeof tg.openInvoice !== "function") {
-        setStatus("Telegram WebApp invoice API not available here.", "info");
-        showToast("Open this page inside Telegram to tip.");
+        setStatus("Opening @CapitalFlowDeskBot Tip Jar…");
+        openBotTipDeepLink();
         return;
       }
       try {
@@ -522,22 +559,25 @@
           }
         });
       } catch (err) {
-        setStatus("Couldn’t open invoice. Try again from the bot menu.");
-        showToast("Invoice open failed — no charge.");
+        setStatus("Couldn’t open invoice. Opening bot /tip instead.");
+        showToast("Falling back to bot Tip Jar.");
+        openBotTipDeepLink();
       }
     }
 
     if (btn) {
       btn.addEventListener("click", function () {
         haptic("light");
-        if (!hasInvoice()) {
-          showToast("Coming soon — tip link not configured yet.");
-          setStatus("Tips aren’t live yet. Thanks for the interest.");
+        if (!inTelegram()) {
+          showToast("Opening Tip Jar in Telegram…");
+          setStatus("Stars checkout needs Telegram. Opening @CapitalFlowDeskBot · /tip.");
+          openBotTipDeepLink();
           return;
         }
-        if (!inTelegram()) {
-          showToast("Open in Telegram to tip with Stars.");
-          setStatus("Stars checkout needs Telegram. Use the bot Mini App / menu button.");
+        if (!hasInvoice()) {
+          showToast("Opening bot /tip…");
+          setStatus("Invoice map missing — opening bot Tip Jar.");
+          openBotTipDeepLink();
           return;
         }
         openInvoiceSafe();
