@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#0a0f1a"/>
+  <meta name="description" content="Unlock Pulse — classify Calendar / Lockup / Flow. UnlockFlow literacy by Capital Flow Desk. NFA."/>
+  <title>Unlock Pulse · Capital Flow Desk</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --navy: #0a0f1a;
+      --navy-2: #111827;
+      --navy-3: #1a2436;
+      --line: rgba(212, 175, 55, 0.18);
+      --gold: #d4af37;
+      --gold-soft: #e8d48b;
+      --gold-dim: rgba(212, 175, 55, 0.12);
+      --text: #f3f0e7;
+      --muted: #9aa8bc;
+      --ok: #3dd68c;
+      --bad: #ff6b7a;
+      --cal: #6ea8ff;
+      --lock: #c9a227;
+      --flow: #5eead4;
+      --radius: 16px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+      --safe-t: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; min-height: 100%;
+      background: var(--navy); color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    body {
+      background:
+        radial-gradient(900px 480px at 50% -20%, rgba(212,175,55,0.14), transparent 55%),
+        radial-gradient(700px 400px at 100% 100%, rgba(94,234,212,0.06), transparent 50%),
+        var(--navy);
+      min-height: 100dvh;
+    }
+    .app {
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      padding: calc(12px + var(--safe-t)) 18px calc(18px + var(--safe-b));
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .mark {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(145deg, var(--gold), #8a6d1a 60%, #1a2436);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 8px 20px rgba(212,175,55,0.22);
+    }
+    .brand-name { font-weight: 700; font-size: 0.92rem; letter-spacing: -0.02em; }
+    .brand-tag { font-size: 0.7rem; color: var(--muted); }
+    .pill {
+      font-size: 0.72rem; color: var(--gold-soft);
+      border: 1px solid var(--line); background: var(--gold-dim);
+      padding: 6px 10px; border-radius: 999px; white-space: nowrap;
+    }
+    .hud { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .stat {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 12px; padding: 10px 12px; text-align: center;
+    }
+    .stat .l { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat .v { font-size: 1.15rem; font-weight: 700; color: var(--gold-soft); margin-top: 2px; font-variant-numeric: tabular-nums; }
+    .timer-bar { height: 4px; border-radius: 999px; background: var(--navy-3); overflow: hidden; }
+    .timer-bar > i {
+      display: block; height: 100%; width: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+      transform-origin: left center;
+      transition: transform 0.05s linear;
+    }
+    .stage {
+      flex: 1; display: flex; flex-direction: column; gap: 12px;
+      justify-content: center; min-height: 280px;
+    }
+    .screen { display: none; flex-direction: column; gap: 14px; animation: in 0.28s ease; }
+    .screen.active { display: flex; }
+    @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .kicker { color: var(--gold); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+    h1 { margin: 0; font-size: 1.55rem; letter-spacing: -0.03em; line-height: 1.2; font-weight: 720; }
+    .lead { margin: 0; color: var(--muted); font-size: 0.95rem; line-height: 1.45; }
+    .card {
+      background: linear-gradient(180deg, var(--navy-3), var(--navy-2));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      min-height: 148px;
+      display: flex; flex-direction: column; justify-content: center; gap: 10px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; inset: 0 auto 0 0; width: 3px;
+      background: linear-gradient(180deg, var(--gold), transparent);
+    }
+    .card.flash-ok { box-shadow: 0 0 0 1px color-mix(in srgb, var(--ok) 55%, transparent), 0 16px 40px rgba(0,0,0,0.35); }
+    .card.flash-bad { box-shadow: 0 0 0 1px color-mix(in srgb, var(--bad) 55%, transparent), 0 16px 40px rgba(0,0,0,0.35); }
+    .chip {
+      align-self: flex-start; font-size: 0.68rem; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--gold-soft);
+      border: 1px solid var(--line); border-radius: 999px; padding: 4px 9px;
+      background: rgba(0,0,0,0.2);
+    }
+    .prompt { font-size: 1.08rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.35; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
+    .choices { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .choice {
+      appearance: none; border: 1px solid var(--line);
+      background: var(--navy-2); color: var(--text);
+      border-radius: 14px; padding: 14px 14px;
+      font: inherit; font-weight: 600; font-size: 0.95rem;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; transition: transform 0.08s ease, background 0.15s, border-color 0.15s;
+      text-align: left;
+    }
+    .choice:active { transform: scale(0.985); }
+    .choice:disabled { opacity: 0.55; pointer-events: none; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .choice[data-ans="Calendar"] .dot { background: var(--cal); box-shadow: 0 0 10px color-mix(in srgb, var(--cal) 50%, transparent); }
+    .choice[data-ans="Lockup"] .dot { background: var(--lock); box-shadow: 0 0 10px color-mix(in srgb, var(--lock) 50%, transparent); }
+    .choice[data-ans="Flow"] .dot { background: var(--flow); box-shadow: 0 0 10px color-mix(in srgb, var(--flow) 50%, transparent); }
+    .choice .sub { display: block; font-size: 0.72rem; font-weight: 500; color: var(--muted); margin-top: 2px; }
+    .btn {
+      appearance: none; border: none; cursor: pointer;
+      border-radius: 14px; padding: 14px 16px;
+      font: inherit; font-weight: 700; font-size: 0.98rem;
+      text-decoration: none; text-align: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn.primary {
+      background: linear-gradient(180deg, #e6c65a, var(--gold) 40%, #a8861f);
+      color: #1a1405;
+      box-shadow: 0 10px 28px rgba(212,175,55,0.28);
+    }
+    .btn.ghost {
+      background: transparent; color: var(--gold-soft);
+      border: 1px solid var(--line);
+    }
+    .btn.block { width: 100%; }
+    .btn:active { transform: scale(0.985); }
+    .teach { display: grid; gap: 8px; margin: 4px 0 8px; }
+    .teach-row {
+      display: grid; grid-template-columns: 72px 1fr; gap: 10px;
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 12px; padding: 10px 12px; font-size: 0.82rem;
+    }
+    .teach-row strong { color: var(--gold-soft); font-size: 0.78rem; letter-spacing: 0.02em; }
+    .teach-row span { color: var(--muted); }
+    .result-score {
+      font-size: 3rem; font-weight: 750; letter-spacing: -0.04em;
+      color: var(--gold-soft); line-height: 1; margin: 4px 0;
+    }
+    .result-meta { color: var(--muted); font-size: 0.9rem; margin: 0; }
+    .share-box {
+      background: var(--navy-2); border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 14px; font-size: 0.85rem;
+      color: var(--text); line-height: 1.4; white-space: pre-wrap;
+    }
+    .cta-soft {
+      margin-top: 2px;
+      background: color-mix(in srgb, var(--gold) 8%, var(--navy-2));
+      border: 1px solid var(--line);
+      border-radius: 14px; padding: 14px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .cta-soft p { margin: 0; font-size: 0.82rem; color: var(--muted); }
+    .nfa {
+      margin: 4px 0 0; text-align: center;
+      font-size: 0.72rem; color: color-mix(in srgb, var(--muted) 80%, transparent);
+    }
+    .feedback {
+      min-height: 1.2em; font-size: 0.82rem; text-align: center;
+      color: var(--muted); transition: color 0.15s;
+    }
+    .feedback.ok { color: var(--ok); }
+    .feedback.bad { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="top">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <div class="brand-name">Unlock Pulse</div>
+          <div class="brand-tag">Capital Flow Desk · teach</div>
+        </div>
+      </div>
+      <span class="pill" id="mode-pill">10s round</span>
+    </header>
+
+    <div class="hud" id="hud" hidden>
+      <div class="stat"><div class="l">Score</div><div class="v" id="score">0</div></div>
+      <div class="stat"><div class="l">Streak</div><div class="v" id="streak">0</div></div>
+      <div class="stat"><div class="l">Time</div><div class="v" id="time">10.0</div></div>
+    </div>
+    <div class="timer-bar" id="timer-bar" hidden><i id="timer-fill"></i></div>
+
+    <main class="stage">
+      <section class="screen active" id="screen-intro">
+        <p class="kicker">UnlockFlow literacy</p>
+        <h1>Classify the flash. Calendar · Lockup · Flow.</h1>
+        <p class="lead">Ten seconds. Tap the lens that fits. Calendar is the schedule. Lockup is the vest. Flow is the realized read.</p>
+        <div class="teach">
+          <div class="teach-row"><strong>Calendar</strong><span>When tokens unlock — dates, cliffs ending, schedule rows.</span></div>
+          <div class="teach-row"><strong>Lockup</strong><span>Who &amp; how — allocation buckets, linear vest, cliffs.</span></div>
+          <div class="teach-row"><strong>Flow</strong><span>What moved — CEX inflows, recipient behavior, pressure.</span></div>
+        </div>
+        <button type="button" class="btn primary block" id="btn-start">Play 10s round</button>
+        <p class="nfa">Not financial advice. Research / education only. No Members invite here.</p>
+      </section>
+
+      <section class="screen" id="screen-play">
+        <div class="card" id="flash-card">
+          <span class="chip" id="card-chip">Flash</span>
+          <div class="prompt" id="card-prompt">…</div>
+          <p class="hint" id="card-hint">Tap the correct UnlockFlow lens</p>
+        </div>
+        <div class="choices" id="choices">
+          <button type="button" class="choice" data-ans="Calendar"><span class="dot"></span><span>Calendar<span class="sub">Schedule · dates · cliffs ending</span></span></button>
+          <button type="button" class="choice" data-ans="Lockup"><span class="dot"></span><span>Lockup<span class="sub">Allocation · vest terms · cliffs</span></span></button>
+          <button type="button" class="choice" data-ans="Flow"><span class="dot"></span><span>Flow<span class="sub">CEX · recipients · sell pressure</span></span></button>
+        </div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+      </section>
+
+      <section class="screen" id="screen-result">
+        <p class="kicker">Round over</p>
+        <div class="result-score" id="final-score">0</div>
+        <p class="result-meta" id="result-meta">0 correct · best streak 0</p>
+        <div class="share-box" id="share-text"></div>
+        <button type="button" class="btn ghost block" id="btn-share">Copy share text</button>
+        <button type="button" class="btn primary block" id="btn-again">Play again</button>
+        <div class="cta-soft">
+          <p>Want the desk’s UnlockFlow briefs (humans)? Soft path — bot checkout, no invite spam.</p>
+          <a class="btn primary block" id="btn-cta" href="https://t.me/CapitalFlowDeskBot?start=pay_19" target="_blank" rel="noopener">Open bot · Members intro 19 USDT →</a>
+        </div>
+        <p class="nfa">NFA · Education only · Capital Flow Desk · @CapitalFlowDeskBot</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+  (function () {
+    const ROUND_MS = 10000;
+    const CARDS = [
+      { t: "Calendar", p: "APT cliff ends Friday — 12M tokens scheduled to unlock.", h: "Date on a schedule" },
+      { t: "Calendar", p: "Tokenomist row: 42M unlock window opens 14 Oct.", h: "Calendar input" },
+      { t: "Calendar", p: "Next team unlock: T-7 horizon on the desk board.", h: "Timing horizon" },
+      { t: "Calendar", p: "Vesting cliff completes in 48 hours.", h: "Schedule event" },
+      { t: "Calendar", p: "Unlock calendar lists three assets this week.", h: "Schedule list" },
+      { t: "Calendar", p: "Public listing: unlock_ts = 2026-10-01T00:00:00Z.", h: "Timestamp" },
+      { t: "Lockup", p: "Team allocation: 18% supply, 24-mo linear after 6-mo cliff.", h: "Who & how locked" },
+      { t: "Lockup", p: "Seed round: monthly unlock, no CEX custody noted.", h: "Vest structure" },
+      { t: "Lockup", p: "Investor bucket 12% · vesting_type: cliff_then_linear.", h: "Allocation terms" },
+      { t: "Lockup", p: "Advisor tokens remain locked until month 18.", h: "Lock terms" },
+      { t: "Lockup", p: "Ecosystem fund: quarterly unlock schedule baked into contract.", h: "Contract vest" },
+      { t: "Lockup", p: "Precision grade: CONFIRMED vest table from docs + explorer.", h: "Terms evidence" },
+      { t: "Flow", p: "Recipient cluster sent 8.2M to Binance within 36h of T0.", h: "Realized movement" },
+      { t: "Flow", p: "CEX inflow z-score +2.1 around unlock; sell_pressure 0.74.", h: "Pressure read" },
+      { t: "Flow", p: "Net recipient→CEX positive; invalidation if 7d net outflow.", h: "Flow judgment" },
+      { t: "Flow", p: "On-chain: unlocked wallets idle — pressure score revised down.", h: "Behavior update" },
+      { t: "Flow", p: "Float depth thin vs unlock size; realized sell print on venue.", h: "Market flow" },
+      { t: "Flow", p: "Pre-event drift: quiet wallets until T-48h, then CEX tags light up.", h: "Flow pattern" }
+    ];
+
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg) {
+      try {
+        tg.ready();
+        tg.expand();
+        if (tg.setHeaderColor) tg.setHeaderColor("#0a0f1a");
+        if (tg.setBackgroundColor) tg.setBackgroundColor("#0a0f1a");
+      } catch (e) {}
+    }
+
+    const $ = function (id) { return document.getElementById(id); };
+    const screens = { intro: $("screen-intro"), play: $("screen-play"), result: $("screen-result") };
+
+    var score = 0, streak = 0, bestStreak = 0, correct = 0, answered = 0;
+    var remaining = ROUND_MS, lastTs = 0, raf = 0, playing = false;
+    var deck = [], current = null, locked = false;
+
+    function show(name) {
+      Object.keys(screens).forEach(function (k) {
+        screens[k].classList.toggle("active", k === name);
+      });
+      var playUi = name === "play";
+      $("hud").hidden = !playUi;
+      $("timer-bar").hidden = !playUi;
+      $("mode-pill").textContent = name === "play" ? "LIVE" : name === "result" ? "Done" : "10s round";
+    }
+
+    function shuffle(a) {
+      var x = a.slice();
+      for (var i = x.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = x[i]; x[i] = x[j]; x[j] = tmp;
+      }
+      return x;
+    }
+
+    function nextCard() {
+      if (!deck.length) deck = shuffle(CARDS);
+      current = deck.pop();
+      locked = false;
+      $("card-prompt").textContent = current.p;
+      $("card-hint").textContent = current.h;
+      $("card-chip").textContent = "Classify";
+      $("flash-card").classList.remove("flash-ok", "flash-bad");
+      $("feedback").textContent = "";
+      $("feedback").className = "feedback";
+      document.querySelectorAll(".choice").forEach(function (b) { b.disabled = false; });
+    }
+
+    function setHud() {
+      $("score").textContent = String(score);
+      $("streak").textContent = String(streak);
+      $("time").textContent = (remaining / 1000).toFixed(1);
+      var pct = Math.max(0, Math.min(1, remaining / ROUND_MS));
+      $("timer-fill").style.transform = "scaleX(" + pct + ")";
+    }
+
+    function endRound() {
+      playing = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      var share =
+        "Unlock Pulse · " + score + " pts in 10s\n" +
+        correct + " correct · streak " + bestStreak + "\n" +
+        "Calendar / Lockup / Flow — UnlockFlow literacy\n" +
+        "Play: https://mhr2027r-dotcom.github.io/capital-flow-desk-web/game/\n" +
+        "Desk: t.me/CapitalFlowDeskBot\n" +
+        "NFA · education only";
+      $("final-score").textContent = String(score);
+      $("result-meta").textContent = correct + " correct · " + answered + " answered · best streak " + bestStreak;
+      $("share-text").textContent = share.replace(/\\\\n/g, "\\n");
+      show("result");
+      if (tg && tg.HapticFeedback) {
+        try { tg.HapticFeedback.notificationOccurred("success"); } catch (e) {}
+      }
+    }
+
+    function tick(ts) {
+      if (!playing) return;
+      if (!lastTs) lastTs = ts;
+      var dt = ts - lastTs;
+      lastTs = ts;
+      remaining -= dt;
+      if (remaining <= 0) {
+        remaining = 0;
+        setHud();
+        endRound();
+        return;
+      }
+      setHud();
+      raf = requestAnimationFrame(tick);
+    }
+
+    function startRound() {
+      score = 0; streak = 0; bestStreak = 0; correct = 0; answered = 0;
+      remaining = ROUND_MS; lastTs = 0; deck = shuffle(CARDS);
+      playing = true;
+      show("play");
+      setHud();
+      nextCard();
+      raf = requestAnimationFrame(tick);
+      if (tg && tg.HapticFeedback) {
+        try { tg.HapticFeedback.impactOccurred("light"); } catch (e) {}
+      }
+    }
+
+    function answer(ans) {
+      if (!playing || locked || !current) return;
+      locked = true;
+      answered += 1;
+      document.querySelectorAll(".choice").forEach(function (b) { b.disabled = true; });
+      var ok = ans === current.t;
+      if (ok) {
+        streak += 1;
+        bestStreak = Math.max(bestStreak, streak);
+        var bonus = Math.min(3, streak);
+        score += 10 + bonus * 2;
+        correct += 1;
+        $("feedback").textContent = "Correct · " + current.t;
+        $("feedback").className = "feedback ok";
+        $("flash-card").classList.add("flash-ok");
+        if (tg && tg.HapticFeedback) {
+          try { tg.HapticFeedback.impactOccurred("medium"); } catch (e) {}
+        }
+      } else {
+        streak = 0;
+        var tip = current.t === "Flow" ? "realized read" : current.t === "Lockup" ? "vest terms" : "schedule";
+        $("feedback").textContent = "Was " + current.t + " — " + tip;
+        $("feedback").className = "feedback bad";
+        $("flash-card").classList.add("flash-bad");
+        if (tg && tg.HapticFeedback) {
+          try { tg.HapticFeedback.notificationOccurred("error"); } catch (e) {}
+        }
+      }
+      setHud();
+      setTimeout(function () {
+        if (!playing) return;
+        nextCard();
+      }, ok ? 320 : 520);
+    }
+
+    $("btn-start").addEventListener("click", startRound);
+    $("btn-again").addEventListener("click", startRound);
+    document.querySelectorAll(".choice").forEach(function (btn) {
+      btn.addEventListener("click", function () { answer(btn.getAttribute("data-ans")); });
+    });
+
+    $("btn-share").addEventListener("click", async function () {
+      var text = $("share-text").textContent;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          document.execCommand("copy"); ta.remove();
+        }
+        $("btn-share").textContent = "Copied";
+        setTimeout(function () { $("btn-share").textContent = "Copy share text"; }, 1400);
+        if (tg && tg.HapticFeedback) {
+          try { tg.HapticFeedback.notificationOccurred("success"); } catch (e) {}
+        }
+      } catch (e) {
+        if (tg && tg.openTelegramLink) {
+          tg.openTelegramLink("https://t.me/share/url?url=" + encodeURIComponent("https://mhr2027r-dotcom.github.io/capital-flow-desk-web/game/") + "&text=" + encodeURIComponent(text));
+        }
+      }
+    });
+
+    var cta = $("btn-cta");
+    cta.addEventListener("click", function (e) {
+      var url = cta.getAttribute("href");
+      if (tg && tg.openTelegramLink) {
+        e.preventDefault();
+        tg.openTelegramLink(url);
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
