@@ -95,7 +95,7 @@ After you preview `sample-week.json` / `schema.json`, these are **optional** bot
 | Free channel (UnlockFlow drills) | https://t.me/CapitalFlowDeskHQ |
 | Members intro **19** USDT (bot checkout) | https://t.me/CapitalFlowDeskBot?start=pay_19 |
 | **Desk Tip Jar** · 50★+ (Stars · gratitude only · no unlock) | https://t.me/CapitalFlowDeskBot?start=tip |
-| Tip Jar Mini App page | [../tip-jar/](../tip-jar/) |
+| Tip Jar Mini App page | [../tip-jar/](../tip/) |
 
 Tips never unlock Agent Feed access. Paid feed onboarding stays with [@Mohammad_GNA](https://t.me/Mohammad_GNA) after USDT confirm.
 

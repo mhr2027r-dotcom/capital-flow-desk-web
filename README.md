@@ -7,7 +7,7 @@ Public Mini App + checkout pages for [Capital Flow Desk](https://t.me/CapitalFlo
 - Sales landing: [`/sales.html`](./sales.html)
 - Agent Feed preview: [`/agent-feed/`](./agent-feed/) · [`sample-week.json`](./agent-feed/sample-week.json) · soft Tip Jar / `pay_19` discovery in [`agent-feed/README.md`](./agent-feed/README.md)
 - **Unlock Pulse** (Mini App game): [`/game/`](./game/) — Calendar / Lockup / Flow · soft CTA `pay_19`
-- **Desk Tip Jar** (Stars · optional): [`/tip-jar/`](./tip-jar/) — 50★ gratitude only · zero entitlement · bot `/tip`
+- **Desk Tip Jar** (Stars · optional): [`/tip/`](./tip/) (alias of tip-jar) — 50★ gratitude only · zero entitlement · bot `/tip`
 
 Soft CTAs (bot-first, underscore payloads only):
 
